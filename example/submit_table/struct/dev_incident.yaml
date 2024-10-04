@@ -1,0 +1,153 @@
+---
+instance: dev286834
+table: incident
+fields:
+  - name: number
+  - name: caller_id
+  - name: category
+    possible_values:
+      - id: 'inquiry'
+        short_description: 'Inquiry / Help'
+      - id: 'database'
+        short_description: 'Database'
+      - id: 'software'
+        short_description: 'Software'
+      - id: 'hardware'
+        short_description: 'Hardware'
+      - id: 'network'
+        short_description: 'Network'
+  - name: subcategory
+    possible_values:
+      - id: 'antivirus'
+        short_description: 'Antivirus'
+      - id: 'email'
+        short_description: 'Email'
+      - id: 'internal application'
+        short_description: 'Internal Application'
+      - id: 'db2'
+        short_description: 'DB2'
+      - id: 'sql server'
+        short_description: 'MS SQL Server'
+      - id: 'oracle'
+        short_description: 'Oracle'
+      - id: 'email'
+        short_description: 'Email'
+      - id: 'os'
+        short_description: 'Operating System'
+      - id: 'cpu'
+        short_description: 'CPU'
+      - id: 'disk'
+        short_description: 'Disk'
+      - id: 'keyboard'
+        short_description: 'Keyboard'
+      - id: 'memory'
+        short_description: 'Memory'
+      - id: 'monitor'
+        short_description: 'Monitor'
+      - id: 'mouse'
+        short_description: 'Mouse'
+      - id: 'dhcp'
+        short_description: 'DHCP'
+      - id: 'dns'
+        short_description: 'DNS'
+      - id: 'ip address'
+        short_description: 'IP Address'
+      - id: 'IP Address'
+        short_description: 'VPN'
+      - id: 'wireless'
+        short_description: 'Wireless'
+  - name: business_service
+  - name: service_offering
+  - name: cmdb_ci
+  - name: short_description
+  - name: description
+  - name: contact_type
+    possible_values:
+      - id: 'chat'
+        short_description: 'Chat'
+      - id: 'email'
+        short_description: 'Email'
+      - id: 'phone'
+        short_description: 'Phone'
+      - id: 'self-service'
+        short_description: 'Self-service'
+      - id: 'virtual_agent'
+        short_description: 'Virtual Agent'
+      - id: 'walk-in'
+        short_description: 'Walk-in'
+  - name: state
+    possible_values:
+      - id: '1'
+        short_description: 'New'
+      - id: '2'
+        short_description: 'In Progress'
+      - id: '3'
+        short_description: 'On Hold'
+      - id: '6'
+        short_description: 'Resolved'
+      - id: '7'
+        short_description: 'Closed'
+      - id: '8'
+        short_description: 'Canceled'
+  - name: impact
+    possible_values:
+      - id: '1'
+        short_description: '1 - High'
+      - id: '2'
+        short_description: '2 - Medium'
+      - id: '3'
+        short_description: '3 - Low'
+  - name: urgency
+    possible_values:
+      - id: '1'
+        short_description: '1 - High'
+      - id: '2'
+        short_description: '2 - Medium'
+      - id: '3'
+        short_description: '3 - Low'
+  - name: priority
+    possible_values:
+      - id: '1'
+        short_description: '1 - Critical'
+      - id: '2'
+        short_description: '2 - High'
+      - id: '3'
+        short_description: '3 - Moderate'
+      - id: '4'
+        short_description: '4 - Low'
+      - id: '5'
+        short_description: '5 - Planning'
+  - name: assignment_group
+  - name: assigned_to
+  - name: parent_incident
+  - name: problem_id
+  - name: rfc
+  - name: caused_by
+  - name: resolved_by
+  - name: resolved_at
+  - name: close_notes
+  - name: knowledge
+  - name: close_code
+    possible_values:
+      - id: 'Duplicate'
+        short_description: 'Duplicate'
+      - id: 'Known error'
+        short_description: 'Known error'
+      - id: 'No resolution provided'
+        short_description: 'No resolution provided'
+      - id: 'Resolved by caller'
+        short_description: 'Resolved by caller'
+      - id: 'Resolved by change'
+        short_description: 'Resolved by change'
+      - id: 'Resolved by problem'
+        short_description: 'Resolved by problem'
+      - id: 'Resolved by request'
+        short_description: 'Resolved by request'
+      - id: 'Solution provided'
+        short_description: 'Solution provided'
+      - id: 'Workaround provided'
+        short_description: 'Workaround provided'
+      - id: 'User error'
+        short_description: 'User error'
+  - name: work_notes
+  - name: comments

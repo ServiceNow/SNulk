@@ -1,0 +1,69 @@
+---
+short_name: test_incident
+instance: dev286834
+table: incident
+return_fields:
+  - name: __SYSID__
+    data_key: 'Incident SysID'
+    none_is_empty: true
+  - name: number
+    data_key: 'Incident Number'
+    none_is_empty: true
+fields:
+  - name: caller_id
+    default_value: '6816f79cc0a8016401c5a33be04be441'
+    required: true
+  - name: category
+    default_value: 'inquiry'
+    required: true
+  - name: subcategory
+    default_value: 'internal application'
+    required: true
+  - name: business_service
+    default_value: '281a4d5fc0a8000b00e4ba489a83eedc'
+    required: true
+  - name: cmdb_ci
+    default_value: '281a4d5fc0a8000b00e4ba489a83eedc'
+    required: true
+  - name: contact_type
+    default_value: 'email'
+    required: true
+  - name: state
+    default_value: '2'
+    required: true
+  - name: impact
+    data_key: impact
+    default_value: '3'
+    required: true
+  - name: urgency
+    data_key: urgency
+    default_value: '3'
+    required: true
+  - name: assignment_group
+    default_value: '12a586cd0bb23200ecfd818393673a30'
+    required: true
+  - name: assigned_to
+    default_value: '63b4c2cd0bb23200ecfd818393673a95'
+    required: true
+  - name: short_description
+    default_value: "[Service Interruption] Instance '[!--instance_name--!]' Is Down"
+    required: true
+    substitution: true
+  - name: description
+    default_value: |
+      Description
+      ----------------
+      The `[!--instance_name--!]` is not accessible on the url's listed below. It has been down since [!--timestamp--!].
+
+      Affected Url
+      ------------------
+      [!--instance_url--!]
+
+
+    required: true
+    substitution: true
+    append_hash: true
+  - name: problem_id
+    data_key: problem_id
+    default_value: ' '
+    required: false

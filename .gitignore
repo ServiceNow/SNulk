@@ -1,0 +1,25 @@
+# python generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# venv
+.venv
+.venv--/
+
+# mac files
+.DS_Store
+**/.DS_Store
+
+# rye
+requirements-dev.lock
+requirements.lock
+
+# project
+data/
+Pipfile.lock
+dump.txt
+notes.txt

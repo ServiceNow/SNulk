@@ -1,0 +1,58 @@
+[project]
+name = "SNulk"
+version = "1.0.0"
+description = "SNulk provides a means to submit a large number of templated records to a table on a ServiceNow instance based on provided data. The table, instance, template, and data are all customizable and intended to be modified to fit the situation."
+authors = [
+    { name = "sigmund.gorski", email = "sigmund.gorski@servicenow.com" }
+]
+maintainers = [
+    { name = "sigmund.gorski", email = "sigmund.gorski@servicenow.com" }
+]
+dependencies = [
+    "pysnc>=1.1.5",
+    "ruamel.yaml>=0.18.6",
+    "jsonpickle>=3.0.3",
+    "pandas>=2.2.0",
+    "openpyxl>=3.1.2",
+    "xlsxwriter>=3.2.0",
+    "selenium>=4.18.1"
+]
+readme = "README.md"
+requires-python = ">= 3.11.4"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    'Intended Audience :: Developers',
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+license = {file = "LICENSE"}
+keywords = ["SNulk", "ServiceNow", "pysnc"]
+
+[project.urls]
+Homepage = "https://github.com/ServiceNow/SNulk"
+Repository = "https://github.com/ServiceNow/SNulk"
+
+[project.scripts]
+"snulk" = "snulk:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+universal = true
+generate-hashes = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/snulk"]
+exclude = ["submit_table"]
+
+[tool.hatch.build.targets.sdist]
+exclude = ["submit_table"]
