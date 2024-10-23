@@ -1,6 +1,6 @@
 [project]
 name = "SNulk"
-version = "1.0.0"
+version = "1.0.1"
 description = "SNulk provides a means to submit a large number of templated records to a table on a ServiceNow instance based on provided data. The table, instance, template, and data are all customizable and intended to be modified to fit the situation."
 authors = [
     { name = "sigmund.gorski", email = "sigmund.gorski@servicenow.com" }
