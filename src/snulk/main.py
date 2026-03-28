@@ -61,12 +61,31 @@ def main() -> None:
             additional sheets those sheets would be ignored. If just '-i file.xlsx' is given then all sheets will be used. The '-i' argument may be given multiple \
             times to provide multiple data sources.")
     parser.add_argument('--debug', '-d', action='store_true', required=False, dest="debug", help="Enable debug logging output.")
-    
+    parser.add_argument('--confirm-first', action='store_true', required=False, default=False,
+                        dest='confirm_first',
+                        help="After submitting the first row, display the return field values for that row and prompt \
+      for Y/N confirmation before submitting remaining rows. Entering N cancels the run gracefully; \
+      the output file is preserved with the first row's return data already written.")
+    parser.add_argument('--delay', type=float, required=False, default=0.0,
+                        dest='delay',
+                        help="Seconds to wait between row submissions (default: 0). Accepts floats (e.g. --delay 2.5). \
+      The delay is applied between rows — not before the first row or after the last row.")
+    parser.add_argument('--dry-run', action='store_true', required=False, default=False,
+                        dest='dry_run',
+                        help="All steps run normally, including Selenium auth, except gr.insert(). Return fields are \
+      not populated in the output file. Use this flag to verify your configuration before a \
+      live submission run.")
+
     args: argparse.Namespace = parser.parse_args()
-    
+
+    if args.delay < 0:
+        parser.error("--delay must be a non-negative number.")
+
     loglevel: int = logging.WARNING
     if args.debug:
         loglevel = logging.DEBUG
+    elif args.dry_run:
+        loglevel = logging.INFO
     logging.basicConfig(level=loglevel, format="[%(asctime)s][%(levelname)s] - %(message)s", datefmt='%y-%m-%d %H:%M:%S', 
                         handlers=[logging.StreamHandler(sys.stdout)])
     
@@ -98,7 +117,7 @@ def main() -> None:
             table_struct_paths.append(Path(elm).joinpath('struct').resolve())
             
     if (args.std_format is None or len(args.std_format) == 0) and (args.std_struct is None or len(args.std_struct) == 0) and (args.std is None or len(args.std) == 0):
-        default_input_path: Path = script_dir.joinpath("..", "submit_table").resolve()
+        default_input_path: Path = script_dir.joinpath("submit_table").resolve()
         table_format_paths.append(default_input_path.joinpath('format').resolve())
         table_struct_paths.append(default_input_path.joinpath('struct').resolve())
         
@@ -117,7 +136,7 @@ def main() -> None:
             tfp: Path = util.test_dir_readable(tfp)
             bs.load_format_submit_tables_from_dir(tfp)
         else:
-            tfp: Path = util.test_dir_readable(tfp)
+            tfp: Path = util.test_file_readable(tfp)
             bs.load_format_submit_tables_from_file(tfp)
     
     inputt: list[list[str]] = args.input
@@ -141,7 +160,8 @@ def main() -> None:
             
     for k,v in parsed_input.items():
         bs.load_data_file(k, v)
-    bs.bulk_submit_all(short_name, username, password)
+    bs.bulk_submit_all(short_name, username, password,
+                       confirm_first=args.confirm_first, delay=args.delay, dry_run=args.dry_run)
 
 if __name__ == '__main__':
     sys.exit(main())

@@ -24,4 +24,5 @@ from .submit_table import *
 from .submit_field import *
 from .submit_tables import *
 from .exceptions import *
+from .snc_auth import *
 from .main import main

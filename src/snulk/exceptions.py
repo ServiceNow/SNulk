@@ -31,3 +31,5 @@ class InvalidValueException(Exception): pass
 class MissingDataException(Exception): pass
 
 class SubmitException(Exception): pass
+
+class SNCException(Exception): pass

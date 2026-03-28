@@ -1,6 +1,6 @@
 [project]
 name = "SNulk"
-version = "1.0.1"
+version = "1.1.0"
 description = "SNulk provides a means to submit a large number of templated records to a table on a ServiceNow instance based on provided data. The table, instance, template, and data are all customizable and intended to be modified to fit the situation."
 authors = [
     { name = "sigmund.gorski", email = "sigmund.gorski@servicenow.com" }
@@ -18,7 +18,7 @@ dependencies = [
     "selenium>=4.18.1"
 ]
 readme = "README.md"
-requires-python = ">= 3.11"
+requires-python = ">= 3.11.4"
 classifiers = [
     "Development Status :: 4 - Beta",
     'Intended Audience :: Developers',

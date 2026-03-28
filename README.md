@@ -86,6 +86,18 @@ snulk -t submit_table -n short_name -i data/file.xlsx > log.txt
 
 # Only read submit data from sheet1 and sheet2 of file.xlsx
 snulk -t submit_table -n short_name -i data/file.xlsx sheet1 sheet2 > log.txt
+
+# Submit first row, display return fields, and prompt Y/N before submitting remaining rows
+snulk -t submit_table -n short_name -i data/file.xlsx --confirm-first > log.txt
+
+# Wait 2.5 seconds between each row submission to reduce load on the instance
+snulk -t submit_table -n short_name -i data/file.xlsx --delay 2.5 > log.txt
+
+# Dry run: all steps including Selenium auth execute, but gr.insert() is skipped; return fields not populated
+snulk -t submit_table -n short_name -i data/file.xlsx --dry-run > log.txt
+
+# Safe preview mode: dry run with first-row confirmation -- useful for verifying setup before a real run
+snulk -t submit_table -n short_name -i data/file.xlsx --confirm-first --dry-run > log.txt
 ```
 
 #### CLI Usage Instructions
@@ -138,6 +150,19 @@ options:
                                                    used. The '-i' argument may be given multiple times to provide
                                                    multiple data sources.
   --debug, -d                                      Enable debug logging output.
+  --confirm-first                                  After submitting the first row, display the return
+                                                   field values for that row and prompt for Y/N
+                                                   confirmation before submitting remaining rows.
+                                                   Entering N cancels the run gracefully; the output
+                                                   file is preserved with the first row's return data.
+  --delay DELAY                                    Seconds to wait between row submissions (default:
+                                                   0). Accepts floats (e.g. --delay 2.5). The delay
+                                                   is not applied before the first row or after the
+                                                   last row.
+  --dry-run                                        All steps run normally, including Selenium auth,
+                                                   except gr.insert(). Return fields are not populated
+                                                   in the output file. Use this flag to verify your
+                                                   configuration before a live submission run.
 ```
 
 ### SNulk Library
@@ -169,11 +194,38 @@ bs.bulk_submit_all("test_incident", "username", "password")
 bs.bulk_submit_all("test_incident")
 
 # it is also possible to use your own data frame for submission
-bs.bulk_submit_basicauth("test_incident", data, "username", "password", Path("example/data/out.xlsx"), "Sheet_name")
+bs.bulk_submit_basicauth("test_incident", data, "username", "password", out_file=Path("example/data/out.xlsx"), excel_sheet_name="Sheet_name")
 
 # same as the previous example but using captured sessions to login
 # you may need to navigate to '/now/nav/ui/classic/params/target/' manually
-bs.bulk_submit_session("test_incident", data, Path("example/data/out.xlsx"), "Sheet_name")
+bs.bulk_submit_session("test_incident", data, out_file=Path("example/data/out.xlsx"), excel_sheet_name="Sheet_name")
+
+# Use --confirm-first behavior programmatically
+bs.bulk_submit_all("test_incident", "username", "password", confirm_first=True)
+
+# Use --delay to pace submissions
+bs.bulk_submit_all("test_incident", "username", "password", delay=2.5)
+
+# --dry-run: auth executes, gr.insert() is skipped, return fields not populated
+bs.bulk_submit_all("test_incident", "username", "password", dry_run=True)
+```
+
+## Running Tests
+
+SNulk ships with a pytest test suite. All tests mock ServiceNow and Selenium -- no live instance or browser is required.
+
+```bash
+# Primary command for source installs (runs all tests)
+rye run pytest
+
+# Bare pytest for PyPi installs or if pytest is on PATH
+pytest
+
+# Verbose output showing individual test names
+rye run pytest -v
+
+# Run only the tests/ directory explicitly
+rye run pytest tests/
 ```
 
 ## Input and Output Files

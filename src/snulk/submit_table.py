@@ -26,6 +26,7 @@ from pathlib import Path
 from ruamel.yaml import YAML
 
 from . import util
+from .snc_auth import get_instance_name as snc_get_instance_name
 from .exceptions import FormatException
 from .submit_field import SubmitField
 from .return_field import ReturnField
@@ -320,10 +321,10 @@ class SubmitTable:
                 if not 'instance' in t or not util.validate_instance_name(t['instance']):
                     raise FormatException("The provided data must have a 'instance' that is a non-empty string containing a https:// url or only letters \
                                                  (case insensitive), numbers, '-', or '_'.")
-                instance_name: str = util.get_instance_name(t['instance'])
+                instance_name: str = snc_get_instance_name(t['instance'])
                 
                 if not 'table' in t or t['table'] is None or not isinstance(t['table'], str) or len(t['table']) == 0 \
-                        or not re.match(r"[0-9a-zA-Z\-_]+", t['table']):
+                        or not re.fullmatch(r"[0-9a-zA-Z\-_]+", t['table']):
                     raise FormatException("The provided data must have a 'table' that is a non-empty string containing only letters \
                                                  (case insensitive), numbers, '-', or '_'.")
                 table_name: str = t['table']
@@ -331,7 +332,7 @@ class SubmitTable:
                 short_name = None
                 if fmat:
                     if not 'short_name' in t or t['short_name'] is None or not isinstance(t['short_name'], str) or len(t['short_name']) == 0 \
-                            or not re.match(r"[0-9a-zA-Z\-_]+", t['short_name']):
+                            or not re.fullmatch(r"[0-9a-zA-Z\-_]+", t['short_name']):
                         raise FormatException("The provided data must have a 'short_name' that is a non-empty string containing only letters \
                                                  (case insensitive), numbers, '-', or '_'.")
                     short_name: str = t['short_name']

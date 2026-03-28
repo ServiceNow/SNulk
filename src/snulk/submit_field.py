@@ -307,7 +307,7 @@ class SubmitField:
         if struct is None or not isinstance(struct, dict):
             raise FormatException("Tried to load a field from a non-dictionary.")
         if not 'name' in struct or struct['name'] is None or not isinstance(struct['name'], str) or len(struct['name']) == 0 \
-                or not re.match(r"[0-9a-zA-Z\-_]+", struct['name']):
+                or not re.fullmatch(r"[0-9a-zA-Z\-_]+", struct['name']):
             raise FormatException("The provided field data must have a 'name' that is a non-empty string containing only letters \
                                         (case insensitive), numbers, '-', or '_'.")
         name: str = struct['name']
@@ -337,7 +337,7 @@ class SubmitField:
             if 'possible_values' in struct and not struct['possible_values'] is None and isinstance(struct['possible_values'], list) and len(struct['possible_values']) != 0:
                 for pv in struct['possible_values']:
                     logging.debug("Loading Possible Value:\n%s", util.to_string(pv))
-                    if pv is None or not isinstance(struct, dict):
+                    if pv is None or not isinstance(pv, dict):
                         raise FormatException("Tried to load a possible value from a non-dictionary.")
                     if not 'id' in pv or pv['id'] is None or not isinstance(pv['id'], str) or len(pv['id']) == 0:
                         raise FormatException("The provided possible value must have a 'id' that is a non-empty string containing.")

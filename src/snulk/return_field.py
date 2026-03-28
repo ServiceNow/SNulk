@@ -170,13 +170,13 @@ class ReturnField:
             raise FormatException("Tried to load a field from a non-dictionary.")
         
         if not 'name' in struct or struct['name'] is None or not isinstance(struct['name'], str) or len(struct['name']) == 0 \
-                or not re.match(r"[0-9a-zA-Z\-_]+", struct['name']):
+                or not re.fullmatch(r"[0-9a-zA-Z\-_]+", struct['name']):
             raise FormatException("The provided field data must have a 'name' that is a non-empty string containing only letters \
                                         (case insensitive), numbers, '-', or '_'.")
         name: str = struct['name']
         
         if not 'data_key' in struct or struct['data_key'] is None or not isinstance(struct['data_key'], str) or len(struct['data_key']) == 0:
-            raise FormatException("The provided field data must have a 'name' that is a non-empty string")
+            raise FormatException("The provided field data must have a 'data_key' that is a non-empty string")
         data_key: str = struct['data_key']
         
         none_is_empty = True

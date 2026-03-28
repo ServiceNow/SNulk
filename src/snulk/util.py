@@ -26,7 +26,7 @@ import re
 import jsonpickle
 import pandas as pd
 
-from .exceptions import InstanceNameFormatException, FilePathException
+from .exceptions import FilePathException
 
 def pickle_json_string(obj) -> str:
     return jsonpickle.encode(obj, unpicklable=True, indent=2, keys=True)
@@ -38,19 +38,20 @@ def test_file_writable(output:Path) -> Path:
     output = output.resolve()
     if output.exists():
         if not (output.is_file() and os.access(str(output), os.W_OK)):
-            raise FilePathException('Error: Unable to write to output \'' + output + '\'. The path is not a file or is not writable.')
+            raise FilePathException('Error: Unable to write to output \'' + str(output) + '\'. The path is not a file or is not writable.')
     else:
         if output.parent.exists():
             if not (output.parent.is_dir() and os.access(str(output.parent), os.W_OK)):
-                raise FilePathException('Error: Unable to write to output \'' + output + '\'. The parent path is not a directory or is not writable.')
+                raise FilePathException('Error: Unable to write to output \'' + str(output) + '\'. The parent path is not a directory or is not writable.')
         else:
-            raise FilePathException('Error: Unable to write to output \'' + output + '\'. The parent path is missing.')
+            raise FilePathException('Error: Unable to write to output \'' + str(output) + '\'. The parent path is missing.')
     return output
 
 def test_file_readable(input_path:Path) -> Path:
+    original = input_path
     input_path = test_file_readable_no_throw(input_path)
     if input_path is None:
-        raise FilePathException('Unable to access input file \'' + str(input_path) + '\'.')
+        raise FilePathException('Unable to access input file \'' + str(original) + '\'.')
     return input_path
 
 def test_file_readable_no_throw(input_path:Path) -> Path:
@@ -143,19 +144,7 @@ def validate_instance_name(instance: str) -> bool:
         if not instance.startswith('https://'):
             return False
         return True
-    elif re.match(r"[0-9a-zA-Z\-_]+", instance):
+    elif re.fullmatch(r"[0-9a-zA-Z\-_]+", instance):
         return True
     return False
 
-def get_instance_name(instance: str) -> bool:
-    if instance is None or not isinstance(instance, str) or len(instance) == 0:
-        raise InstanceNameFormatException("The instance name must be a non-empty string.")
-    elif '://' in instance:
-        instance = instance.rstrip('/')
-        if not instance.startswith('https://'):
-            raise InstanceNameFormatException("Must provide https:// url")
-        return instance
-    elif re.match(r"[0-9a-zA-Z\-_]+", instance):
-        return 'https://%s.service-now.com' % instance
-    raise InstanceNameFormatException("Invalid instance name. Only https:// urls and non-empty strings containing only letters \
-                                        (case insensitive), numbers, '-', or '_' are supported.")

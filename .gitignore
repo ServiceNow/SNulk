@@ -24,3 +24,8 @@ data/
 Pipfile.lock
 dump.txt
 notes.txt
+
+# planning (local only)
+.planning/
+Plans/
+MEMORY/
